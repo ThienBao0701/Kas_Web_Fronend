@@ -1,0 +1,17 @@
+'use strict';
+(function(){
+  var key='',data=null,app=document.getElementById('app'),status=document.getElementById('status');
+  function esc(s){return String(s==null?'':s).replace(/[&<>'"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c];});}
+  function money(v){return new Intl.NumberFormat('vi-VN').format(v)+' ₫';}
+  function setStatus(t,ok){status.className='status '+(ok?'ok':'err');status.textContent=t;}
+  function render(){
+    var html='';
+    data.branches.forEach(function(b){html+='<section class="branch"><h2>Chi nhánh '+esc(b.address)+'</h2>';
+      b.rooms.forEach(function(r){var imgs=r.images||[];html+='<article class="room"><div><h3>STT '+r.stt+' · '+esc(r.name)+'</h3><div class="meta">Ez: '+esc(r.ez)+' · Jul–Sep: '+money(r.rates.jul_sep[0])+' / '+money(r.rates.jul_sep[1])+' · Tháng 10: '+money(r.rates.oct[0])+' / '+money(r.rates.oct[1])+' · Tháng 11–1: '+money(r.rates.nov_jan[0])+' / '+money(r.rates.nov_jan[1])+'</div><div class="upload"><input type="file" accept="image/jpeg,image/png,image/webp" multiple data-room="'+esc(r.key)+'"><button class="btn gold" data-upload="'+esc(r.key)+'">Upload ảnh</button></div></div><div><b class="price">'+imgs.length+' ảnh</b></div><div class="thumbs">'+imgs.map(function(x){return '<div class="thumb"><img src="'+esc(x.url)+'" alt=""><div><span title="'+esc(x.name)+'">'+esc((x.name||'').slice(0,18))+'</span><button class="btn danger" data-delete="'+esc(x.id)+'">Xóa</button></div></div>';}).join('')+'</div></article>';});
+      html+='</section>';});app.innerHTML=html;
+    app.querySelectorAll('[data-upload]').forEach(function(btn){btn.addEventListener('click',function(){var input=app.querySelector('input[data-room="'+CSS.escape(btn.dataset.upload)+'"]');if(!input.files.length){alert('Hãy chọn ít nhất 1 ảnh.');return;}var fd=new FormData();fd.append('roomKey',btn.dataset.upload);Array.prototype.forEach.call(input.files,function(f){fd.append('images',f);});btn.disabled=true;fetch('api/admin/upload',{method:'POST',headers:{'x-admin-key':key},body:fd}).then(function(r){return r.json().then(function(x){if(!r.ok)throw new Error(x.error||'Upload lỗi');return x;});}).then(function(x){setStatus('Đã upload '+x.added+' ảnh vào '+btn.dataset.upload,true);return load();}).catch(function(e){setStatus(e.message,false);}).finally(function(){btn.disabled=false;});});});
+    app.querySelectorAll('[data-delete]').forEach(function(btn){btn.addEventListener('click',function(){if(!confirm('Xóa ảnh này?'))return;fetch('api/admin/upload/'+encodeURIComponent(btn.dataset.delete),{method:'DELETE',headers:{'x-admin-key':key}}).then(function(r){return r.json().then(function(x){if(!r.ok)throw new Error(x.error||'Xóa lỗi');return x;});}).then(function(){setStatus('Đã xóa ảnh.',true);load();}).catch(function(e){setStatus(e.message,false);});});});
+  }
+  function load(){return fetch('api/catalog').then(function(r){return r.json();}).then(function(x){data=x;render();});}
+  document.getElementById('login').addEventListener('click',function(){key=document.getElementById('key').value.trim();if(!key){setStatus('Hãy nhập ADMIN_KEY.',false);return;}fetch('api/admin/status',{headers:{'x-admin-key':key}}).then(function(r){if(!r.ok)throw new Error('ADMIN_KEY không đúng.');return r.json();}).then(function(){setStatus('Đã mở quyền quản trị.',true);document.getElementById('publicBox').classList.remove('hidden');document.getElementById('publicUrl').textContent=location.origin+'/reference';return load();}).catch(function(e){setStatus(e.message,false);});});
+})();
