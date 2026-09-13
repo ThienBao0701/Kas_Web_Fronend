@@ -132,12 +132,31 @@
 
   /* ---- collection rail ---- */
   U.$('#rail').innerHTML = D.hotels.map(function (h) {
-    return '<a class="pcard" href="hotel-detail.html?hotel=' + h.id + '">' +
+    return '<a class="pcard" data-hotel="' + h.id + '" href="hotel-detail.html?hotel=' + h.id + '">' +
       '<div class="pcard__img">' + U.img(h.images[0], h.name, '', true, false) + '</div>' +
       '<div class="pcard__b"><h4>' + U.esc(h.name).replace(/^KAS /, 'KAS<br>') + '</h4>' +
       '<span class="area">' + U.esc(h.area) + '</span>' +
       '<div class="pcard__rate">from ' + U.vnd(h.startingPrice) + ' VND</div></div></a>';
   }).join('');
+
+  /* The admin can replace the eight Collection card images without changing
+     the static hotel dataset. The server catalog returns only the overrides;
+     static images remain the safe fallback. */
+  fetch('/api/catalog', {cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(catalog){
+    if(!catalog || !catalog.collectionImages) return;
+    U.$$('#rail .pcard[data-hotel]').forEach(function(card){
+      var id=card.getAttribute('data-hotel'), src=catalog.collectionImages[id];
+      var h=D.getHotel(id);
+      if(src) U.$('.pcard__img', card).innerHTML=U.img(src,h?h.name:id,'',true,false);
+      var branch=(catalog.branches||[]).find(function(b){return b.hotelId===id;});
+      if(branch && branch.rooms && branch.rooms.length){
+        var mins=branch.rooms.map(function(r){
+          return [].concat(r.rates.jul_sep||[],r.rates.oct||[],r.rates.nov_jan||[]).filter(function(v){return v!=null;});
+        }).reduce(function(a,b){return a.concat(b);},[]);
+        if(mins.length){ var priceEl=U.$('.pcard__rate',card); if(priceEl) priceEl.textContent='from '+U.vnd(Math.min.apply(null,mins))+' VND'; }
+      }
+    });
+  }).catch(function(){});
 
   /* ---- stats ---- */
   var totalRooms = D.hotels.reduce(function (s, h) { return s + (h.totalRooms || 0); }, 0);

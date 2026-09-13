@@ -35,7 +35,29 @@
       r.liveSheetRoomName = live.name;
       r.liveEz = live.ez;
       r.liveUploadedCount = r.liveImages.length;
+
+      /* Admin-edited rates are returned by /api/catalog. Overlay them onto
+         the shared KAS_RATES object so hotel-detail, room-detail, booking
+         and other existing pages immediately use the same live prices. */
+      if (global.KAS_RATES && global.KAS_RATES.TABS && mapping.branch) {
+        var tab = global.KAS_RATES.TABS[mapping.branch];
+        if (tab && Array.isArray(tab.sheetRooms)) {
+          var sheet = tab.sheetRooms.find(function(x){ return Number(x.stt) === Number(mapping.stt); });
+          if (sheet && live.rates) {
+            if (Array.isArray(live.rates.jul_sep)) sheet.jul_sep = live.rates.jul_sep.slice();
+            if (Array.isArray(live.rates.oct)) sheet.oct = live.rates.oct.slice();
+            if (Array.isArray(live.rates.nov_jan)) sheet.nov_jan = live.rates.nov_jan.slice();
+            /* Keep cards/filters aligned with the current editable KAS rates. */
+            var all = [].concat(sheet.jul_sep || [], sheet.oct || [], sheet.nov_jan || []).filter(function(v){return v!=null;});
+            if (all.length) r.pricePerNight = Math.min.apply(null, all);
+          }
+        }
+      }
     });
+    if (hotel.rooms && hotel.rooms.length) {
+      var roomPrices = hotel.rooms.map(function(r){ return Number(r.pricePerNight || Infinity); }).filter(function(v){ return isFinite(v); });
+      if (roomPrices.length) hotel.startingPrice = Math.min.apply(null, roomPrices);
+    }
     return hotel;
   }
   global.KAS_LIVE = {load:load, applyToHotel:applyToHotel, indexCatalog:indexCatalog, uploadedUrls:uploadedUrls};
