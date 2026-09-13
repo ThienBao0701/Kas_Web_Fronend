@@ -8,7 +8,7 @@ const crypto = require('crypto');
 
 const ROOT = __dirname;
 const DATA_DIR = path.join(ROOT, 'data');
-const UPLOAD_DIR = path.join(ROOT, 'uploads');
+const UPLOAD_DIR = process.env.UPLOAD_DIR || path.join(ROOT, 'uploads');
 const RATE_FILE = path.join(DATA_DIR, 'rate-sheet.json');
 const UPLOAD_FILE = path.join(UPLOAD_DIR, 'manifest.json');
 const PORT = Number(process.env.PORT || 3000);
