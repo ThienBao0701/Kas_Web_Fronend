@@ -12,8 +12,8 @@
       ['bed',    r.bedType,                 'Bed type'],
       ['view',   r.view || 'Not published', 'View'],
       ['users',  r.maxGuests + ' guest' + (r.maxGuests === 1 ? '' : 's'), 'Max occupancy'],
-      ['coffee', r.breakfast ? 'Included' : 'Not included', 'Breakfast'],
-      ['wifi',   'Free',                    'Wi-Fi']
+      ['home',   r.window || 'Not published', 'Window'],
+      ['bath',   r.bathroom || 'Not published', 'Bathroom'],
     ];
     return '<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:16px;padding:20px 0;border-block:1px solid var(--line)" class="specstrip">' +
       items.map(function (i) {

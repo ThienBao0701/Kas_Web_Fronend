@@ -78,11 +78,6 @@
           spec('users', 'Max ' + r.maxGuests + ' guest' + (r.maxGuests === 1 ? '' : 's')) +
         '</div>' +
         '<p class="rcard__desc">' + U.esc(roomBlurb(h, r)) + '</p>' +
-        '<div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-top:2px">' +
-          (r.liveImages && r.liveImages.length
-            ? '<span class="photochip"><span style="display:inline-flex;align-items:center;gap:5px">' + U.icon('image', 11) + ' ' + r.liveImages.length + ' ảnh phòng đã upload</span></span>'
-            : '<span class="photochip photochip--warn">' + U.icon('alert', 11) + 'Chưa upload ảnh cho hạng phòng này</span>') +
-        '</div>' +
         '<a class="btn btn--link" href="' + href + '">View details ' + U.icon('chevD', 12) + '</a>' +
       '</div>' +
       '<div class="rcard__side">' +

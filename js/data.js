@@ -539,6 +539,96 @@
     });
   });
 
+  /* ---- Trip.com room-profile overlay -------------------------------------
+     The KAS rate sheet remains authoritative for pricing / STT mapping.
+     Room-facing physical details below are taken from the supplied Trip.com
+     property pages (and their indexed mirrors). Values not published by
+     Trip.com are left null rather than guessed.
+     ---------------------------------------------------------------------- */
+  var TRIP_ROOM_PROFILES = {
+    'hotel-01': {
+      1:{name:'Standard Double Room No Window',size:'17 m²',sizeNum:17,bedType:'1 Double bed',view:'No window',window:'No window'},
+      2:{name:'Superior Queen Room with Window',size:'15 m²',sizeNum:15,bedType:'1 Queen bed',view:'Not published',window:'Window'},
+      3:{name:'Family Room with City View',size:'35 m²',sizeNum:35,bedType:'2 Small double beds',view:'City view',window:'Fixed window'}
+    },
+    'hotel-02': {
+      1:{name:'Standard Double Room No Window',size:'15 m²',sizeNum:15,bedType:'1 Double bed',view:'No window',window:'No window'},
+      2:{name:'Superior Double Room Small Window',size:'15 m²',sizeNum:15,bedType:'1 Double bed',view:'Not published',window:'Small window'},
+      3:{name:'Deluxe King Room with Window',size:'20 m²',sizeNum:20,bedType:'1 Queen bed',view:'Not published',window:'Window'},
+      4:{name:'Premium King Room with City View',size:'22 m²',sizeNum:22,bedType:'1 Queen bed',view:'City view',window:'Fixed window'},
+      5:{name:'Deluxe Twin Room with Window',size:'20 m²',sizeNum:20,bedType:'2 Single beds or 1 King bed',view:'Not published',window:'Window'},
+      6:{name:'Premium Twin Room with City View',size:'22 m²',sizeNum:22,bedType:'2 Single beds or 1 King bed',view:'City view',window:'Fixed window'},
+      7:{name:'Family Room with City View',size:'27 m²',sizeNum:27,bedType:'1 Small double bed and 1 Queen bed',view:'City view',window:'Fixed window'},
+      8:{name:'Deluxe Family Room with City View',size:'45 m²',sizeNum:45,bedType:'2 Queen beds',view:'City view',window:'Fixed window'}
+    },
+    'hotel-03': {
+      1:{name:'Standard Double Room No Window',size:'14 m²',sizeNum:14,bedType:'1 Small double bed',view:'No window',window:'No window'},
+      2:{name:'Superior Queen Room with City View',size:'20 m²',sizeNum:20,bedType:'1 Queen bed',view:'City view',window:'Window'},
+      3:{name:'Deluxe King Room with Window',size:'25 m²',sizeNum:25,bedType:'1 Queen bed',view:'Not published',window:'Window'},
+      4:{name:'Deluxe Family Room with City View',size:'42 m²',sizeNum:42,bedType:'2 Queen beds',view:'City view',window:'Not published'}
+    },
+    'hotel-04': {
+      1:{name:'Superior Queen Room No Window',size:'18 m²',sizeNum:18,bedType:'1 Queen bed',view:'No window',window:'No window'},
+      2:{name:'Deluxe Queen Room with Window',size:'21 m²',sizeNum:21,bedType:'1 Queen bed',view:'Not published',window:'May not have a window'},
+      3:{name:'Deluxe Queen Room with City View',size:'23 m²',sizeNum:23,bedType:'1 Queen bed',view:'City view',window:'May not have a window'},
+      4:{name:'Premium Twin Room with Window',size:'29 m²',sizeNum:29,bedType:'2 Single beds or 1 King bed',view:'Not published',window:'May not have a window'},
+      5:{name:'Premium Queen Room with Balcony & City View',size:'26 m²',sizeNum:26,bedType:'1 Queen bed',view:'City view',window:'Has window'},
+      6:{name:'Junior Suite with Balcony & City View',size:'50 m²',sizeNum:50,bedType:'1 Queen bed',view:'City view',window:'Has window'}
+    },
+    'hotel-05': {
+      1:{name:'Standard Double Room',size:null,sizeNum:null,bedType:'1 Double bed',view:'Not published',window:'Not published'},
+      2:{name:'Superior Double Room',size:null,sizeNum:null,bedType:'1 Queen bed',view:'Not published',window:'Not published'},
+      3:{name:'Double Or Twin Room',size:null,sizeNum:null,bedType:'2 Single beds or 1 King bed',view:'Not published',window:'Not published'},
+      4:{name:'Deluxe Queen Room',size:null,sizeNum:null,bedType:'1 Queen bed',view:'Not published',window:'Has window'},
+      5:{name:'Studio',size:null,sizeNum:null,bedType:'1 Queen bed',view:'Not published',window:'No window'},
+      6:{name:'Queen Suite-Non-Smoking',size:null,sizeNum:null,bedType:'1 Queen bed',view:'Not published',window:'Has window'}
+    },
+    'hotel-06': {
+      1:{name:'Standard Double Room No Window',size:'15 m²',sizeNum:15,bedType:'1 Queen bed',view:'No window',window:'No window'},
+      2:{name:'Superior Double Room with Window',size:'16 m²',sizeNum:16,bedType:'1 Queen bed',view:'Not published',window:'Window'},
+      3:{name:'Deluxe Double Room with Window',size:'20 m²',sizeNum:20,bedType:'1 Queen bed',view:'Not published',window:'May not have a window'},
+      4:{name:'Deluxe Queen Room with City View',size:'21 m²',sizeNum:21,bedType:'1 Queen bed',view:'City view',window:'May not have a window'},
+      5:{name:'Deluxe Queen Room with Balcony & City View',size:null,sizeNum:null,bedType:'1 Queen bed',view:'City view',window:'Not published'},
+      6:{name:'Superior Twin Room with Window',size:'26 m²',sizeNum:26,bedType:'2 Small double beds or 1 King bed',view:'Not published',window:'May not have a window'},
+      7:{name:'Premium King Room with City View',size:'30 m²',sizeNum:30,bedType:'1 Queen bed',view:'City view',window:'May not have a window'},
+      8:{name:'Premium Twin Room with Window',size:'29 m²',sizeNum:29,bedType:'2 Single beds or 1 King bed',view:'Not published',window:'May not have a window'},
+      9:{name:'Deluxe Family Room with City View',size:'45 m²',sizeNum:45,bedType:'2 Queen beds',view:'City view',window:'May not have a window'}
+    },
+    'hotel-07': {
+      1:{name:'Standard Double Room No Window',size:'14 m²',sizeNum:14,bedType:'1 Queen bed',view:'No window',window:'No window'},
+      2:{name:'Superior Queen Room No Window',size:'22 m²',sizeNum:22,bedType:'1 Queen bed',view:'No window',window:'No window'},
+      3:{name:'Deluxe Queen Room with City View',size:'23 m²',sizeNum:23,bedType:'1 Queen bed',view:'City view',window:'May not have a window'},
+      4:{name:'Deluxe King Room with Balcony',size:'27 m²',sizeNum:27,bedType:'1 Queen bed',view:'Not published',window:'Not published'},
+      5:{name:'Premium King Room with City View',size:'32 m²',sizeNum:32,bedType:'1 Queen bed',view:'City view',window:'May not have a window'},
+      6:{name:'Premium Suite Room',size:'45 m²',sizeNum:45,bedType:'1 Queen bed',view:'Not published',window:'No window'}
+    },
+    'hotel-08': {
+      1:{name:'Standard Double Room No Window',size:'15 m²',sizeNum:15,bedType:'1 Small double bed',view:'No window',window:'No window'},
+      2:{name:'Superior Queen Room No Window',size:'21 m²',sizeNum:21,bedType:'1 Queen bed',view:'No window',window:'No window'},
+      3:{name:'Deluxe Queen Room with City View',size:'20 m²',sizeNum:20,bedType:'1 Queen bed',view:'City view',window:'Has window'},
+      4:{name:'Deluxe King Room with Window',size:'27 m²',sizeNum:27,bedType:'1 Queen bed',view:'Not published',window:'Has window'},
+      5:{name:'Deluxe Queen Room with Balcony',size:'25 m²',sizeNum:25,bedType:'1 Queen bed',view:'Not published',window:'Has window'},
+      6:{name:'Premium King Room with Balcony',size:'37 m²',sizeNum:37,bedType:'1 Queen bed',view:'Not published',window:'Has window'}
+    }
+  };
+
+  hotels.forEach(function (h) {
+    var profiles = TRIP_ROOM_PROFILES[h.id] || {};
+    h.rooms.forEach(function (r) {
+      var mapping = global.KAS_RATES && global.KAS_RATES.mappingFor(r.id);
+      var stt = mapping ? Number(mapping.stt) : null;
+      var p = stt != null ? profiles[stt] : null;
+      if (!p) return;
+      r.name = p.name;
+      r.size = p.size;
+      r.sizeNum = p.sizeNum;
+      r.bedType = p.bedType;
+      r.view = p.view;
+      r.window = p.window;
+      r.tripRoomSource = 'Trip.com';
+    });
+  });
+
   /* ---- post-process: assemble galleries, amenities, policies ----------
      Photographs come exclusively from window.KAS_IMAGES (js/images.js).
      -------------------------------------------------------------------- */
