@@ -30,9 +30,19 @@
     var rooms = indexed.rooms;
     var property = indexed.hotels[hotel.id];
     if (property && Array.isArray(property.propertyImages) && property.propertyImages.length) {
-      hotel.images = property.propertyImages.map(function(x){ return typeof x === 'string' ? x : x.url; }).filter(Boolean);
+      var propertyGallery = property.propertyImages.map(function(x){
+        return typeof x === 'string' ? x : x.url;
+      }).filter(Boolean);
+      /* Keep the uploaded property gallery separate so each page can choose
+         exactly what it needs: the home Collection card keeps its dedicated
+         collection image, while the Hotels listing and hotel detail use this
+         gallery. */
+      hotel.propertyGalleryImages = propertyGallery.slice();
+      hotel.images = propertyGallery.slice();
       hotel.imageSource = 'KAS admin uploaded property gallery';
       hotel.hasCustomPropertyGallery = true;
+    } else {
+      hotel.propertyGalleryImages = [];
     }
     hotel.rooms.forEach(function(r){
       var mapping = global.KAS_RATES && global.KAS_RATES.mappingFor(r.id);

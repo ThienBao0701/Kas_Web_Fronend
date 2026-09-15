@@ -99,6 +99,7 @@
 <script src="js/booking.js"></script>
 <script src="js/search.js"></script>
 <script src="js/hotel.js"></script>
+<script src="js/live.js"></script>
 <script>
 (function () {
   var U = window.U, D = window.KAS_DATA, App = window.App,
@@ -106,9 +107,45 @@
 
   App.boot({ active: 'hotels' });
   U.$('#backHome').innerHTML = U.icon('arrL', 13) + ' Back to home';
-  U.$('#heroBg').innerHTML = U.img(D.getHotel('hotel-02').images[0], 'KAS Hotel Collection', '', false, false);
   U.$('#trustStrip').outerHTML = B.trustStripHTML();
 
+  /* Live property gallery: use the exact photos uploaded for each hotel
+     on the outer hotel listing too. Static images remain the fallback. */
+  var liveReady = window.KAS_LIVE.load().then(function(catalog) {
+    D.hotels.forEach(function(h) { window.KAS_LIVE.applyToHotel(h, catalog); });
+    /* Explicitly repaint the card media from the admin property gallery.
+       This is intentionally separate from the dataset mutation above so the
+       Hotels listing can never fall back to the old static photo set when the
+       server catalog has uploaded gallery images. */
+    function syncPropertyGalleries() {
+      U.$$('.hcard[data-hotel-id]').forEach(function(card) {
+        var h = D.getHotel(card.getAttribute('data-hotel-id'));
+        if (!h || !h.propertyGalleryImages || !h.propertyGalleryImages.length) return;
+        var media = U.$('.hcard__media', card);
+        if (!media) return;
+        var badge = h.starRating >= 4 ? '<span class="badge badge--gold">Signature Property</span>' : '';
+        media.innerHTML = badge + App.miniHTML(h.propertyGalleryImages, h.name);
+        var mini = U.$('.mini', media);
+        if (mini) App.miniCarousel(mini);
+      });
+    }
+    window.__KAS_SYNC_PROPERTY_GALLERIES__ = syncPropertyGalleries;
+    var heroHotel = D.getHotel('hotel-02');
+    if (heroHotel && heroHotel.images && heroHotel.images.length) {
+      U.$('#heroBg').innerHTML = U.img(heroHotel.images[0], heroHotel.name, '', false, false);
+    }
+    return catalog;
+  }).catch(function() {
+    var fallbackHero = D.getHotel('hotel-02');
+    if (fallbackHero && fallbackHero.images && fallbackHero.images.length) {
+      U.$('#heroBg').innerHTML = U.img(fallbackHero.images[0], fallbackHero.name, '', false, false);
+    }
+    return null;
+  });
+
+  /* Static dataset is rendered immediately; once the live catalog arrives,
+     repaint so hotel cards use the same uploaded property gallery as the
+     hotel-detail page. */
   var search = B.readSearch();
 
   /* ---- search summary + modify ---- */
@@ -226,6 +263,10 @@
     App.reveal();
   }
   paint();
+  liveReady.then(function() {
+    paint();
+    if (window.__KAS_SYNC_PROPERTY_GALLERIES__) window.__KAS_SYNC_PROPERTY_GALLERIES__();
+  });
 
   U.$('#srcNote').innerHTML = U.icon('info', 17) +
     '<span><b>About this data</b>Hotel names, addresses, ratings, review counts and room inventory are sourced from each property\'s Agoda listing (resolved to its current KAS brand name), the operator\'s own site kashotelpremium.com, Trip.com and Tripadvisor. Nightly rates shown are <b style="display:inline">KAS reference rates</b> derived from each property\'s published price range — not live Agoda rates. See DATA_AUDIT.md for the full field-by-field audit.</span>';

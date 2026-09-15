@@ -12,10 +12,13 @@
       adults: search.adults, children: search.children, rooms: search.rooms
     });
     var href = 'hotel-detail.html?' + q;
-    return '<article class="hcard fade-up">' +
+    var listingImages = (h.propertyGalleryImages && h.propertyGalleryImages.length)
+      ? h.propertyGalleryImages
+      : h.images;
+    return '<article class="hcard fade-up" data-hotel-id="' + U.esc(h.id) + '">' +
       '<div class="hcard__media">' +
         (h.starRating >= 4 ? '<span class="badge badge--gold">Signature Property</span>' : '') +
-        App.miniHTML(h.images, h.name) +
+        App.miniHTML(listingImages, h.name) +
       '</div>' +
       '<div class="hcard__b">' +
         '<div class="hcard__hd">' +

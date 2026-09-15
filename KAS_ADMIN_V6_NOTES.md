@@ -24,3 +24,6 @@ Then open:
 
 ## Git after testing
 Use `git add -u` and inspect `git status`. Do not use `git add .` because `uploads/` is intentionally untracked.
+
+## V7 — Property gallery on hotel listing
+The hotel listing page (`hotels.html`) now loads the live catalog and overlays each hotel's admin-uploaded property gallery before repainting hotel cards. This means the outside hotel cards show the same property photos configured in Admin that appear inside `hotel-detail.html`. Static hotel photos remain the fallback when no property gallery has been uploaded.
