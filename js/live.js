@@ -12,10 +12,12 @@
   }
   function indexCatalog(catalog){
     var rooms = {};
+    var hotels = {};
     (catalog.branches || []).forEach(function(b){
+      hotels[b.hotelId] = b;
       (b.rooms || []).forEach(function(r){ rooms[r.key] = r; });
     });
-    return rooms;
+    return { rooms: rooms, hotels: hotels };
   }
   function uploadedUrls(entry){
     return (entry && entry.images || []).map(function(x){
@@ -24,7 +26,14 @@
   }
   function applyToHotel(hotel, catalog){
     if(!hotel || !catalog) return hotel;
-    var rooms = indexCatalog(catalog);
+    var indexed = indexCatalog(catalog);
+    var rooms = indexed.rooms;
+    var property = indexed.hotels[hotel.id];
+    if (property && Array.isArray(property.propertyImages) && property.propertyImages.length) {
+      hotel.images = property.propertyImages.map(function(x){ return typeof x === 'string' ? x : x.url; }).filter(Boolean);
+      hotel.imageSource = 'KAS admin uploaded property gallery';
+      hotel.hasCustomPropertyGallery = true;
+    }
     hotel.rooms.forEach(function(r){
       var mapping = global.KAS_RATES && global.KAS_RATES.mappingFor(r.id);
       if(!mapping) return;

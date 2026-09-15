@@ -2,7 +2,7 @@
 (function(){
   var key='', data=null;
   var status=document.getElementById('status'), management=document.getElementById('management');
-  var collectionGrid=document.getElementById('collectionGrid'), rooms=document.getElementById('rooms'), photoRooms=document.getElementById('photoRooms');
+  var collectionGrid=document.getElementById('collectionGrid'), propertyGrid=document.getElementById('propertyGrid'), rooms=document.getElementById('rooms'), photoRooms=document.getElementById('photoRooms');
   function esc(s){return String(s==null?'':s).replace(/[&<>'"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c];});}
   function money(v){return new Intl.NumberFormat('vi-VN').format(+v||0)+' ₫';}
   function setStatus(t,ok){status.className='status '+(ok?'ok':'err');status.textContent=t;}
@@ -26,6 +26,39 @@
       api('/api/admin/collection-image/'+encodeURIComponent(id),{method:'DELETE'}).then(function(){toast('Đã xóa ảnh Collection.');return load();}).catch(function(e){setStatus(e.message,false);});
     });});
   }
+  function renderPropertyGallery(){
+    if(!propertyGrid) return;
+    propertyGrid.innerHTML=(data.branches||[]).map(function(b){
+      var imgs=b.propertyImages||[];
+      var thumbs=imgs.map(function(x){
+        return '<div class="thumb"><img src="'+esc(x.url||x)+'" alt=""><div><span title="'+esc(x.name||'')+'">'+esc((x.name||'').slice(0,16))+'</span><button class="btn danger" style="padding:5px 7px;font-size:10px" data-property-delete="'+esc(x.id||'')+'">Xóa</button></div></div>';
+      }).join('');
+      return '<article class="collectionCard"><div class="media">'+
+        (imgs.length?'<img src="'+esc(imgs[0].url||imgs[0])+'" alt="">':'<div class="small">Chưa có gallery riêng</div>')+
+        '</div><div class="body"><h3>'+esc(b.address)+'</h3><div class="small">'+esc(b.hotelId)+' · '+imgs.length+' ảnh bên trong</div>'+
+        '<div class="upload"><input type="file" accept="image/jpeg,image/png,image/webp" multiple data-property-input="'+esc(b.hotelId)+'"><button class="btn gold" data-property-upload="'+esc(b.hotelId)+'">Thêm ảnh</button></div>'+
+        '<div class="thumbs">'+thumbs+'</div></div></article>';
+    }).join('');
+    propertyGrid.querySelectorAll('[data-property-upload]').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        var id=btn.dataset.propertyUpload, input=propertyGrid.querySelector('[data-property-input="'+CSS.escape(id)+'"]');
+        if(!input || !input.files.length){toast('Hãy chọn ảnh bên trong khách sạn trước.');return;}
+        if(input.files.length>20){toast('Mỗi lần tối đa 20 ảnh.');return;}
+        var fd=new FormData();fd.append('hotelId',id);
+        Array.prototype.forEach.call(input.files,function(f){fd.append('images',f);});
+        btn.disabled=true;
+        api('/api/admin/property-images',{method:'POST',body:fd}).then(function(x){toast('Đã thêm '+x.added+' ảnh cho '+id);return load();}).catch(function(e){setStatus(e.message,false);}).finally(function(){btn.disabled=false;});
+      });
+    });
+    propertyGrid.querySelectorAll('[data-property-delete]').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        if(!btn.dataset.propertyDelete)return;
+        if(!confirm('Xóa ảnh này khỏi gallery khách sạn?'))return;
+        api('/api/admin/property-images/'+encodeURIComponent(btn.dataset.propertyDelete),{method:'DELETE'}).then(function(){toast('Đã xóa ảnh gallery.');return load();}).catch(function(e){setStatus(e.message,false);});
+      });
+    });
+  }
+
   function priceInput(key,season,idx,val,label){return '<label>'+label+'<input type="number" min="0" step="50000" data-rate="'+esc(key)+'" data-season="'+season+'" data-idx="'+idx+'" value="'+esc(val)+'"></label>';}
   function renderRooms(filter){
     var q=(filter||'').trim().toLowerCase();
@@ -45,7 +78,7 @@
     photoRooms.querySelectorAll('[data-upload]').forEach(function(btn){btn.addEventListener('click',function(){var keyRoom=btn.dataset.upload;var input=photoRooms.querySelector('input[data-room="'+CSS.escape(keyRoom)+'"]');if(!input.files.length){toast('Hãy chọn ảnh phòng.');return;}var fd=new FormData();fd.append('roomKey',keyRoom);Array.prototype.forEach.call(input.files,function(f){fd.append('images',f);});btn.disabled=true;api('/api/admin/upload',{method:'POST',body:fd}).then(function(x){toast('Đã upload '+x.added+' ảnh.');return load();}).catch(function(e){setStatus(e.message,false);}).finally(function(){btn.disabled=false;});});});
     photoRooms.querySelectorAll('[data-delete]').forEach(function(btn){btn.addEventListener('click',function(){if(!confirm('Xóa ảnh này?'))return;api('/api/admin/upload/'+encodeURIComponent(btn.dataset.delete),{method:'DELETE'}).then(function(){toast('Đã xóa ảnh.');return load();}).catch(function(e){setStatus(e.message,false);});});});
   }
-  function render(){renderCollections();renderRooms(document.getElementById('roomSearch').value);renderPhotos();}
+  function render(){renderCollections();renderPropertyGallery();renderRooms(document.getElementById('roomSearch').value);renderPhotos();}
   function load(){return fetch('/api/catalog',{cache:'no-store'}).then(function(r){return r.json();}).then(function(x){data=x;render();});}
   document.getElementById('roomSearch').addEventListener('input',function(){renderRooms(this.value);});
   document.getElementById('login').addEventListener('click',function(){key=document.getElementById('key').value.trim();if(!key){setStatus('Hãy nhập ADMIN_KEY.',false);return;}api('/api/admin/status').then(function(){setStatus('Đã mở quyền quản trị.',true);management.classList.remove('hidden');document.getElementById('publicBox').classList.remove('hidden');document.getElementById('publicUrl').textContent=location.origin+'/index.html';document.getElementById('referenceUrl').textContent=location.origin+'/reference';return load();}).catch(function(e){setStatus(e.message,false);});});

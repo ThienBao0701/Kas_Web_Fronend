@@ -137,6 +137,29 @@ const collectionUpload = multer({
   }
 });
 
+const propertyStorage = multer.diskStorage({
+  destination(req, file, cb) {
+    const hotelId = String(req.body.hotelId || '');
+    if (!rateData.branches || !rateData.branches[hotelId]) return cb(new Error('Chi nhánh không hợp lệ.'));
+    const dir = path.join(UPLOAD_DIR, 'property', hotelId);
+    fs.mkdirSync(dir, { recursive: true });
+    cb(null, dir);
+  },
+  filename(req, file, cb) {
+    const ext = path.extname(file.originalname || '').toLowerCase();
+    const safeExt = ['.jpg', '.jpeg', '.png', '.webp'].includes(ext) ? ext : '.jpg';
+    cb(null, 'property-' + hotelIdSafe(req.body.hotelId) + '-' + Date.now() + '-' + crypto.randomBytes(4).toString('hex') + safeExt);
+  }
+});
+const propertyUpload = multer({
+  storage: propertyStorage,
+  limits: { fileSize: 10 * 1024 * 1024, files: 20 },
+  fileFilter(req, file, cb) {
+    if (/^image\/(jpeg|png|webp)$/.test(file.mimetype)) cb(null, true);
+    else cb(new Error('Chỉ nhận JPG, PNG hoặc WEBP.'));
+  }
+});
+
 const app = express();
 app.use(function(req, res, next) {
   if (/^\/(?:server\.js|package(?:\.json|-lock\.json)?|\.env(?:\..*)?)$/.test(req.path)) return res.sendStatus(404);
@@ -154,6 +177,9 @@ function publicCatalog() {
     address: b.address,
     gid: b.gid || null,
     collectionImage: collectionImages.hotels && collectionImages.hotels[hotelId] ? collectionImages.hotels[hotelId].url : null,
+    propertyImages: collectionImages.hotels && collectionImages.hotels[hotelId] && Array.isArray(collectionImages.hotels[hotelId].gallery)
+      ? collectionImages.hotels[hotelId].gallery.map(x => ({ id: x.id, url: x.url, name: x.originalName }))
+      : [],
     rooms: (b.sheetRooms || []).map(r => {
       const key = hotelId + ':' + r.stt;
       const rates = effectiveRates(key, r);
@@ -257,7 +283,8 @@ app.post('/api/admin/collection-image', auth, (req, res) => {
       filename: req.file.filename,
       originalName: req.file.originalname,
       url: '/uploads/collection/' + hotelId + '/' + req.file.filename,
-      uploadedAt: new Date().toISOString()
+      uploadedAt: new Date().toISOString(),
+      gallery: old && Array.isArray(old.gallery) ? old.gallery : []
     };
     if (!collectionImages.hotels) collectionImages.hotels = {};
     collectionImages.hotels[hotelId] = item;
@@ -266,13 +293,63 @@ app.post('/api/admin/collection-image', auth, (req, res) => {
   });
 });
 
+app.post('/api/admin/property-images', auth, (req, res) => {
+  propertyUpload.array('images', 20)(req, res, err => {
+    if (err) return res.status(400).json({ error: err.message });
+    const hotelId = String(req.body.hotelId || '');
+    if (!rateData.branches || !rateData.branches[hotelId]) {
+      (req.files || []).forEach(f => { try { fs.unlinkSync(f.path); } catch (_) {} });
+      return res.status(400).json({ error: 'Chi nhánh không hợp lệ.' });
+    }
+    if (!req.files || !req.files.length) return res.status(400).json({ error: 'Hãy chọn ít nhất 1 ảnh.' });
+    if (!collectionImages.hotels) collectionImages.hotels = {};
+    if (!collectionImages.hotels[hotelId]) collectionImages.hotels[hotelId] = {};
+    if (!Array.isArray(collectionImages.hotels[hotelId].gallery)) collectionImages.hotels[hotelId].gallery = [];
+    req.files.forEach(file => {
+      collectionImages.hotels[hotelId].gallery.push({
+        id: crypto.randomUUID(),
+        filename: file.filename,
+        originalName: file.originalname,
+        url: '/uploads/property/' + hotelId + '/' + file.filename,
+        uploadedAt: new Date().toISOString()
+      });
+    });
+    writeJsonAtomic(COLLECTION_FILE, collectionImages);
+    res.json({ ok: true, hotelId, added: req.files.length,
+      images: collectionImages.hotels[hotelId].gallery });
+  });
+});
+
+app.delete('/api/admin/property-images/:id', auth, (req, res) => {
+  let found = null;
+  Object.entries(collectionImages.hotels || {}).some(([hotelId, item]) => {
+    const gallery = Array.isArray(item.gallery) ? item.gallery : [];
+    const idx = gallery.findIndex(x => x.id === req.params.id);
+    if (idx < 0) return false;
+    found = { hotelId, idx, item: gallery[idx] };
+    return true;
+  });
+  if (!found) return res.status(404).json({ error: 'Không tìm thấy ảnh nội thất/khách sạn.' });
+  const rel = String(found.item.url || '').replace(/^\/uploads\//, '');
+  const file = path.join(UPLOAD_DIR, rel);
+  try { if (fs.existsSync(file)) fs.unlinkSync(file); } catch (_) {}
+  collectionImages.hotels[found.hotelId].gallery.splice(found.idx, 1);
+  writeJsonAtomic(COLLECTION_FILE, collectionImages);
+  res.json({ ok: true });
+});
+
 app.delete('/api/admin/collection-image/:hotelId', auth, (req, res) => {
   const hotelId = String(req.params.hotelId || '');
   const old = collectionImages.hotels && collectionImages.hotels[hotelId];
   if (!old) return res.status(404).json({ error: 'Chi nhánh chưa có ảnh collection riêng.' });
   const oldFile = path.join(UPLOAD_DIR, 'collection', hotelId, old.filename || '');
   try { if (fs.existsSync(oldFile)) fs.unlinkSync(oldFile); } catch (_) {}
-  delete collectionImages.hotels[hotelId];
+  const gallery = Array.isArray(old.gallery) ? old.gallery : [];
+  if (gallery.length) {
+    collectionImages.hotels[hotelId] = { gallery: gallery };
+  } else {
+    delete collectionImages.hotels[hotelId];
+  }
   writeJsonAtomic(COLLECTION_FILE, collectionImages);
   res.json({ ok: true });
 });

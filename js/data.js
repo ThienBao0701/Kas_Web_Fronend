@@ -489,6 +489,56 @@
     }
   ];
 
+  /* ---- complete room inventory from operator rate sheets ----------------
+     Some branches previously had fewer UI room objects than the operator's
+     rate sheet. The sheet is authoritative for inventory/rates, so the
+     missing room types are added here with only source-supported basics.
+     Unknown physical details stay null / "Not published" rather than being
+     fabricated. Their exact rates and uploaded photos are resolved through
+     KAS_RATES + /api/catalog using branch + STT.
+     ---------------------------------------------------------------------- */
+  var SHEET_ROOM_ADDITIONS = {
+    'hotel-04': [
+      { id:'h04-r5', stt:1, name:'Superior Queen Room', bedType:'Queen bed', maxGuests:2, adults:2, children:0, view:'Not published', balcony:false, bathroom:'Private bathroom', breakfast:false },
+      { id:'h04-r6', stt:3, name:'Deluxe Queen Room with City View', bedType:'Queen bed', maxGuests:2, adults:2, children:1, view:'City view', balcony:false, bathroom:'Private bathroom', breakfast:false }
+    ],
+    'hotel-06': [
+      { id:'h06-r7', stt:2, name:'Superior Double Room with Window', bedType:'Double bed', maxGuests:2, adults:2, children:0, view:'Window', balcony:false, bathroom:'Private bathroom', breakfast:false },
+      { id:'h06-r8', stt:4, name:'Deluxe Queen Room with City View', bedType:'Queen bed', maxGuests:2, adults:2, children:1, view:'City view', balcony:false, bathroom:'Private bathroom', breakfast:false },
+      { id:'h06-r9', stt:8, name:'Premium Twin Room with City View', bedType:'2 Single beds', maxGuests:2, adults:2, children:1, view:'City view', balcony:false, bathroom:'Private bathroom', breakfast:false }
+    ],
+    'hotel-07': [
+      { id:'h07-r5', stt:2, name:'Superior Queen Room', bedType:'Queen bed', maxGuests:2, adults:2, children:0, view:'Not published', balcony:false, bathroom:'Private bathroom', breakfast:false },
+      { id:'h07-r6', stt:4, name:'Deluxe King Room with Balcony', bedType:'King bed', maxGuests:2, adults:2, children:1, view:'Not published', balcony:true, bathroom:'Private bathroom', breakfast:false }
+    ],
+    'hotel-08': [
+      { id:'h08-r6', stt:5, name:'Deluxe Queen Room with Balcony', bedType:'Queen bed', maxGuests:2, adults:2, children:1, view:'Not published', balcony:true, bathroom:'Private bathroom', breakfast:false }
+    ]
+  };
+
+  hotels.forEach(function (h) {
+    var adds = SHEET_ROOM_ADDITIONS[h.id] || [];
+    adds.forEach(function (a) {
+      h.rooms.push({
+        id: a.id,
+        name: a.name,
+        size: null,
+        sizeNum: null,
+        bedType: a.bedType,
+        maxGuests: a.maxGuests,
+        adults: a.adults,
+        children: a.children,
+        view: a.view,
+        balcony: a.balcony,
+        bathroom: a.bathroom,
+        breakfast: a.breakfast,
+        pricePerNight: 0,
+        roomSource: 'Operator rate sheet — room type inventory',
+        notes: 'Room size and other physical details were not published in the supplied rate sheet.'
+      });
+    });
+  });
+
   /* ---- post-process: assemble galleries, amenities, policies ----------
      Photographs come exclusively from window.KAS_IMAGES (js/images.js).
      -------------------------------------------------------------------- */

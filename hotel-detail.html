@@ -141,7 +141,7 @@
   var search = B.readSearch();
   var hotel = D.getHotel(search.hotelId || U.qs().hotel || 'hotel-04');
   if (!hotel) { location.replace('hotels.html'); return; }
-  var liveReady = window.KAS_LIVE.load().then(function(catalog){ window.KAS_LIVE.applyToHotel(hotel, catalog); return catalog; }).catch(function(){ return null; });
+  var liveReady = window.KAS_LIVE.load().then(function(catalog){ window.KAS_LIVE.applyToHotel(hotel, catalog); paintPropertyMedia(); if (hotel.hasCustomPropertyGallery) { var src = hotel.imageSource || ''; U.$('#aboutSrc').innerHTML = 'Photos: ' + U.esc(src) + ' · Data: ' + U.esc(hotel.source); } return catalog; }).catch(function(){ return null; });
   search.hotelId = hotel.id;
   B.saveSearch(search);
 
@@ -210,8 +210,18 @@
       '</div></div>';
   U.$('#saveHotel').addEventListener('click', function () { U.toast(hotel.name + ' saved to your list.'); });
 
+  function paintPropertyMedia(){
+    var imgs = hotel.images && hotel.images.length ? hotel.images : [];
+    if (!imgs.length) return;
+    U.$('#heroBg').innerHTML = U.img(imgs[0], hotel.name, '', false, false);
+    App.gallery(U.$('#gal'), imgs, hotel.name);
+    var mini = imgs[1] || imgs[0];
+    var miniHost = document.querySelector('#propBar > div > div > div');
+    if (miniHost) miniHost.innerHTML = U.img(mini, hotel.name, '', true, false);
+  }
+
   /* ---- gallery ---- */
-  App.gallery(U.$('#gal'), hotel.images, hotel.name);
+  paintPropertyMedia();
 
   /* ---- about ---- */
   U.$('#aboutH').textContent = hotel.tagline;
