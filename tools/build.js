@@ -14,7 +14,7 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 const PAGES = ['index.html', 'hotels.html', 'hotel-detail.html', 'room-detail.html',
                'guest-details.html', 'review-confirm.html', 'booking-confirmed.html',
-               'manage-booking.html', 'reference.html', 'admin.html'];
+               'manage-booking.html','about.html','experiences.html','offers.html','support.html', 'reference.html', 'admin.html'];
 const SCRIPTS = ['images.js', 'rates.js', 'data.js', 'utils.js', 'storage.js', 'contact.js',
                  'app.js', 'booking.js', 'search.js', 'hotel.js', 'room.js', 'reference.js', 'admin.js'];
 const STYLES = ['style.css', 'components.css', 'responsive.css'];

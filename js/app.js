@@ -14,21 +14,19 @@
       '</svg>';
   }
   function logo(dark, href) {
-    var c = dark ? '#C2A25C' : '#C2A25C';
     return '<a class="logo" href="' + (href || 'index.html') + '" aria-label="KAS Hotel Collection — home">' +
-      logoMark(c) +
-      '<span class="logo__tx"><span class="logo__name"' + (dark ? '' : ' style="color:var(--tx)"') + '>KAS</span>' +
-      '<span class="logo__sub">Hotel Collection</span></span></a>';
+      '<img src="assets/logo/kas-hotel-collection.svg" alt="KAS Hotel Collection" style="width:150px;max-width:40vw;height:auto;display:block">' +
+      '</a>';
   }
 
   var NAV = [
     { t: 'Destinations', h: 'hotels.html' },
     { t: 'Hotels',       h: 'hotels.html' },
-    { t: 'Experiences',  h: 'hotels.html#experiences' },
-    { t: 'Offers',       h: 'hotels.html' },
+    { t: 'Experiences',  h: 'experiences.html' },
+    { t: 'Offers',       h: 'offers.html' },
     { t: 'My KAS',       h: 'manage-booking.html' },
-    { t: 'About KAS',    h: 'index.html#about' },
-    { t: 'Support',      h: 'manage-booking.html' }
+    { t: 'About KAS',    h: 'about.html' },
+    { t: 'Support',      h: 'support.html' }
   ];
 
   /* ---------------- header ---------------- */
@@ -96,11 +94,11 @@
 
   /* ---------------- footer ---------------- */
   var FOOT_COLS = [
-    { h: 'Destinations', l: [['All locations','hotels.html'],['District 1','hotels.html'],['Ben Thanh','hotels.html'],['Nguyen Thai Binh','hotels.html'],['Le Thanh Ton','hotels.html']] },
-    { h: 'Hotels',       l: [['KAS Milestone Premium','hotel-detail.html?hotel=hotel-04'],['KAS Dilly Luxury','hotel-detail.html?hotel=hotel-08'],['KAS Sonata Luxury','hotel-detail.html?hotel=hotel-06'],['KAS Passion Boutique','hotel-detail.html?hotel=hotel-01'],['View all 8 properties','hotels.html']] },
-    { h: 'Experiences',  l: [['Dining','hotels.html'],['Rooftop bars','hotels.html'],['Wellness & spa','hotels.html'],['Local experiences','hotels.html'],['Airport transfer','hotels.html']] },
-    { h: 'Support',      l: [['FAQ','manage-booking.html'],['Booking information','manage-booking.html'],['Cancellation policy','manage-booking.html'],['Payment methods','manage-booking.html'],['Contact us','manage-booking.html']] },
-    { h: 'My KAS',       l: [['My bookings','manage-booking.html'],['Manage booking','manage-booking.html'],['Member benefits','manage-booking.html'],['Sign in / Join','manage-booking.html']] },
+    { h: 'Destinations', l: [['All properties','hotels.html'],['District 1','hotels.html'],['Ben Thanh','hotels.html'],['Nguyen Thai Binh','hotels.html'],['Le Thanh Ton','hotels.html']] },
+    { h: 'Hotels',       l: [['KAS Passion Boutique','hotel-detail.html?hotel=hotel-01'],['KAS Elegance','hotel-detail.html?hotel=hotel-02'],['KAS Ancient Boutique','hotel-detail.html?hotel=hotel-03'],['KAS Milestone Premium','hotel-detail.html?hotel=hotel-04'],['KAS Zody Boutique','hotel-detail.html?hotel=hotel-05'],['KAS Sonata Luxury','hotel-detail.html?hotel=hotel-06'],['KAS Eliana Luxury','hotel-detail.html?hotel=hotel-07'],['KAS Dilly Luxury','hotel-detail.html?hotel=hotel-08']] },
+    { h: 'Experiences',  l: [['Dining','experiences.html#dining'],['Rooftop bars','experiences.html#rooftops'],['Wellness & spa','experiences.html#wellness'],['Local experiences','experiences.html#local'],['Airport transfer','experiences.html#transfer']] },
+    { h: 'Support',      l: [['FAQ','support.html#faq'],['Booking information','support.html#booking'],['Cancellation policy','support.html#cancellation'],['Payment methods','support.html#payment'],['Contact us','support.html#contact']] },
+    { h: 'My KAS',       l: [['My bookings','manage-booking.html'],['Manage booking','manage-booking.html'],['Member benefits','offers.html#member'],['Sign in / Join','manage-booking.html']] },
     { h: '__CONTACT__',  l: [] }
   ];
 

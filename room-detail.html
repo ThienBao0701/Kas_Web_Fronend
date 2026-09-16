@@ -183,7 +183,7 @@
 
   var love = (hotel.subRatings ? Object.keys(hotel.subRatings)
       .sort(function (a, b) { return hotel.subRatings[b] - hotel.subRatings[a]; })
-      .slice(0, 5).map(function (k) { return k + ' — ' + hotel.subRatings[k].toFixed(1) + '/5'; })
+      .slice(0, 5).map(function (k) { return k + ' — ' + (hotel.subRatings[k] * 2).toFixed(1) + '/10'; })
     : ['Central District 1 location', 'Friendly, attentive team', 'Clean, comfortable rooms',
        'Good value for money', 'Easy walk to Ben Thanh Market']);
   U.$('#rLove').innerHTML = love.map(function (t) {

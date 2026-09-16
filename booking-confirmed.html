@@ -211,7 +211,7 @@
         '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(14,13,11,.9),transparent 60%);' +
           'display:flex;align-items:flex-end;padding:18px">' +
           '<div><h4 style="color:var(--ivory);font-family:var(--serif);font-size:1.25rem">' + U.esc(bk.hotelName) + '</h4>' +
-          '<span style="color:var(--gold)">' + U.stars(hotel ? hotel.rating : 5, 12) + '</span>' +
+          '<span style="color:var(--gold)">' + U.stars(hotel ? hotel.rating / 2 : 5, 12) + '</span>' +
           '<p class="tiny" style="color:var(--tx-inv-2);margin:4px 0 0">' + U.esc(bk.hotelAddress) + '</p></div>' +
         '</div></div>' +
       '<div class="panel__hd" style="background:var(--surface-2);border-bottom:1px solid var(--line)">' +

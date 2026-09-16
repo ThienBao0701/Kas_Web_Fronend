@@ -51,16 +51,15 @@
     return '<div class="between" style="margin-bottom:22px;flex-wrap:wrap">' +
         '<div><h2 style="font-size:1.5rem">Guest reviews</h2>' +
         '<p class="tiny muted" style="margin:3px 0 0">Verified reviews from ' + U.esc(h.ratingSource) +
-        (h.altScore ? ' · ' + h.altScore.value + '/' + h.altScore.scale + ' from ' + h.altScore.count + ' reviews on ' + U.esc(h.altScore.source) : '') +
+        '' +
         '</p></div>' +
-        (h.ranking ? '<span class="chip chip--gold">' + U.icon('crown', 13) + U.esc(h.ranking) + '</span>' : '') +
       '</div>' +
       '<div style="display:grid;grid-template-columns:300px 1fr;gap:26px;align-items:start" class="revgrid">' +
         '<div class="card">' +
           '<div style="text-align:center;padding-bottom:16px;border-bottom:1px solid var(--line)">' +
             '<div style="font-family:var(--serif);font-size:3rem;line-height:1;color:var(--tx)">' + h.rating.toFixed(1) +
-              '<span style="font-size:1.1rem;color:var(--tx-3)">/5</span></div>' +
-            '<div style="color:var(--gold);margin:9px 0 5px;display:flex;justify-content:center">' + U.stars(h.rating, 15) + '</div>' +
+              '<span style="font-size:1.1rem;color:var(--tx-3)">/10</span></div>' +
+            '<div style="color:var(--gold);margin:9px 0 5px;display:flex;justify-content:center">' + U.stars(h.rating / 2, 15) + '</div>' +
             '<div class="tiny muted">Based on ' + h.reviews + ' reviews</div>' +
           '</div>' +
           '<div style="padding-top:16px;display:flex;flex-direction:column;gap:7px">' +

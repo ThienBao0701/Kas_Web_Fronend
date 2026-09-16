@@ -44,7 +44,7 @@
     </div>
     <div class="rail fade-up" id="rail"></div>
     <div style="text-align:center;margin-top:2.6rem">
-      <a class="btn btn--ghost" href="hotels.html">View all 8 properties</a>
+      <a class="btn btn--ghost" href="hotels.html">View all properties</a>
       <a class="btn btn--ghost" href="reference.html">Guest price & photos</a>
     </div>
   </div>
@@ -163,7 +163,7 @@
   var totalReviews = D.hotels.reduce(function (s, h) { return s + (h.reviews || 0); }, 0);
   var avg = (D.hotels.reduce(function (s, h) { return s + h.rating; }, 0) / D.hotels.length).toFixed(1);
   var STATS = [['crown', '8', 'Properties'], ['pin', 'District 1', 'One neighbourhood'],
-               ['star', avg + '/5', 'Average rating'], ['users', totalReviews.toLocaleString('en-US'), 'Guest reviews']];
+               ['star', avg + '/10', 'Average guest rating'], ['users', totalReviews.toLocaleString('en-US'), 'Guest reviews']];
   U.$('#stats').innerHTML = STATS.map(function (s) {
     return '<div><div style="color:var(--gold);margin-bottom:9px">' + U.icon(s[0], 20) + '</div>' +
       '<div style="font-family:var(--serif);font-size:1.75rem;color:var(--ivory);line-height:1.1">' + s[1] + '</div>' +
@@ -187,8 +187,8 @@
       '<span class="eyebrow eyebrow--lt">Featured Property</span>' +
       '<h2 style="color:var(--ivory);margin:1rem 0 1rem;font-size:clamp(1.8rem,2.8vw,2.5rem)">' + U.esc(flag.name) + '</h2>' +
       '<div style="display:flex;align-items:center;gap:10px;margin-bottom:1.2rem">' +
-        U.stars(flag.rating, 13) +
-        '<span style="color:var(--tx-inv-2);font-size:.82rem">' + flag.rating + '/5 · ' + flag.reviews + ' reviews · ' + U.esc(flag.ranking) + '</span>' +
+        U.stars(flag.rating / 2, 13) +
+        '<span style="color:var(--tx-inv-2);font-size:.82rem">' + flag.rating + '/10 · ' + flag.reviews + ' reviews · ' + U.esc(flag.ratingSource) + '</span>' +
       '</div>' +
       '<p style="color:var(--tx-inv-2);font-size:.93rem;max-width:440px">' + U.esc(flag.description) + '</p>' +
       '<div style="display:flex;gap:8px;flex-wrap:wrap;margin:1.6rem 0 2rem">' +

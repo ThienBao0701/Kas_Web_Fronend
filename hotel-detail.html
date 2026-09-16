@@ -202,9 +202,10 @@
       '<div style="text-align:right;flex-shrink:0">' +
         '<div style="display:flex;align-items:center;gap:10px;justify-content:flex-end">' +
           '<span style="font-family:var(--serif);font-size:1.9rem;color:var(--ivory);line-height:1">' + hotel.rating.toFixed(1) +
-          '<span style="font-size:.9rem;color:var(--tx-inv-2)">/5</span></span>' +
-          '<span style="color:var(--gold)">' + U.stars(hotel.rating, 15) + '</span></div>' +
+          '<span style="font-size:.9rem;color:var(--tx-inv-2)">/10</span></span>' +
+          '<span style="color:var(--gold)">' + U.stars(hotel.rating / 2, 15) + '</span></div>' +
         '<div class="tiny" style="color:var(--tx-inv-2);margin-top:4px">' + hotel.reviews + ' reviews · ' + U.esc(hotel.ratingSource) + '</div>' +
+          (hotel.tripUrl ? '<a class="tiny" href="' + hotel.tripUrl + '" target="_blank" rel="noopener" style="display:inline-block;margin-top:6px;color:var(--gold)">Property reference ↗</a>' : '') +
         '<button class="btn btn--ghost-lt btn--sm" id="saveHotel" type="button" style="margin-top:12px">' +
           U.icon('heart', 13) + ' Save hotel</button>' +
       '</div></div>';
@@ -229,7 +230,7 @@
   var facts = [
     ['Check-in', hotel.checkIn], ['Check-out', hotel.checkOut],
     ['Property rating', hotel.starRating + '-star'],
-    ['Guest rating', hotel.rating + '/5 (' + hotel.reviews + ' reviews)'],
+    ['Guest rating', hotel.rating + '/10 (' + hotel.reviews + ' reviews)'],
     ['Rooms in property', hotel.totalRooms ? hotel.totalRooms + ' rooms' : 'Not published by source'],
     ['Room types', hotel.roomCount + ' types'],
     ['Neighbourhood', hotel.area + ', ' + hotel.district],
