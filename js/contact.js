@@ -98,7 +98,7 @@ woven(title, sub) +
   /** Footer contact column. */
   function footerBlock() {
     return '<h5>Contact &amp; support</h5>' +
-      '<div class="ct-stack">' +
+      '<div class="ct-stack ct-stack--footer">' +
         phoneLink('plain') +
         zaloLink('plain') +
         whatsappLink('plain') +

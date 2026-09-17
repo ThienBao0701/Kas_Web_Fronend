@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>KAS Hotel Collection — Timeless Places. Meaningful Stays.</title>
-<meta name="description" content="Eight distinctive hotels in the heart of Ho Chi Minh City, united by a passion for heartfelt service and memorable experiences.">
+<meta name="description" content="Distinctive hotels in the heart of Ho Chi Minh City, united by a passion for heartfelt service and memorable experiences.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -24,7 +24,7 @@
       <span class="eyebrow eyebrow--lt">A Legacy of Vietnamese Hospitality</span>
       <h1>Timeless Places.<br>Meaningful Stays.</h1>
       <hr class="rule">
-      <p>Discover the KAS collection and find your perfect stay in Ho Chi Minh City — eight distinctive addresses, one heartfelt promise.</p>
+      <p>Discover the KAS collection and find your perfect stay in Ho Chi Minh City — distinctive stays, one heartfelt promise.</p>
     </div>
     <div id="heroSearch"></div>
   </div>
@@ -40,7 +40,7 @@
   <div class="container">
     <div class="fade-up">
       <h2 class="section-title">The KAS Collection</h2>
-      <p class="section-sub">Eight addresses. One legacy of hospitality.</p>
+      
     </div>
     <div class="rail fade-up" id="rail"></div>
     <div style="text-align:center;margin-top:2.6rem">
@@ -57,7 +57,7 @@
       <span class="eyebrow eyebrow--lt">A Legacy of KAS</span>
       <h2 style="margin-top:1rem;font-size:clamp(1.7rem,2.6vw,2.3rem)">Built on heartfelt service</h2>
       <p style="color:var(--tx-inv-2);font-size:.93rem;margin-top:1.2rem;max-width:430px">
-        From a single boutique house to eight properties across District 1, KAS has been
+        From a single boutique house to a growing collection across District 1, KAS has been
         dedicated to creating genuine moments and lasting memories for every guest.
       </p>
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin:2.4rem 0 2rem" id="stats"></div>
@@ -134,12 +134,12 @@
   U.$('#rail').innerHTML = D.hotels.map(function (h) {
     return '<a class="pcard" data-hotel="' + h.id + '" href="hotel-detail.html?hotel=' + h.id + '">' +
       '<div class="pcard__img">' + U.img(h.images[0], h.name, '', true, false) + '</div>' +
-      '<div class="pcard__b"><h4>' + U.esc(h.name).replace(/^KAS /, 'KAS<br>') + '</h4>' +
-      '<span class="area">' + U.esc(h.area) + '</span>' +
+      '<div class="pcard__b"><h4>' + U.esc(h.name) + '</h4>' +
+      '<span class="area pcard__address">' + U.esc(h.address) + '</span>' +
       '<div class="pcard__rate">from ' + U.vnd(h.startingPrice) + ' VND</div></div></a>';
   }).join('');
 
-  /* The admin can replace the eight Collection card images without changing
+  /* The admin can replace the Collection card images without changing
      the static hotel dataset. The server catalog returns only the overrides;
      static images remain the safe fallback. */
   fetch('/api/catalog', {cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(catalog){

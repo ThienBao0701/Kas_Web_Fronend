@@ -754,7 +754,13 @@
       whatsapp:     'https://wa.me/84869768885',
       email:        'kashotelpremium@gmail.com',
       hqAddress:    '170–174 Nguyen Thai Binh, District 1, Ho Chi Minh City',
-      hours:        '24/7'
+      hours:        '24/7',
+      travelTrade: {
+        displayPhone: '+84 968 694 864',
+        tel: 'tel:+84968694864',
+        zalo: 'https://zalo.me/0968694864',
+        whatsapp: 'https://wa.me/84968694864'
+      }
     }
   };
 

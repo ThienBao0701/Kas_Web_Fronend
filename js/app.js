@@ -99,7 +99,8 @@
     { h: 'Experiences',  l: [['Dining','experiences.html#dining'],['Rooftop bars','experiences.html#rooftops'],['Wellness & spa','experiences.html#wellness'],['Local experiences','experiences.html#local'],['Airport transfer','experiences.html#transfer']] },
     { h: 'Support',      l: [['FAQ','support.html#faq'],['Booking information','support.html#booking'],['Cancellation policy','support.html#cancellation'],['Payment methods','support.html#payment'],['Contact us','support.html#contact']] },
     { h: 'My KAS',       l: [['My bookings','manage-booking.html'],['Manage booking','manage-booking.html'],['Member benefits','offers.html#member'],['Sign in / Join','manage-booking.html']] },
-    { h: '__CONTACT__',  l: [] }
+    { h: '__CONTACT__',  l: [] },
+    { h: '__TRADE__',    l: [] }
   ];
 
   function renderFooter() {
@@ -116,7 +117,7 @@
         '</div>' +
         '<div class="ftr__main">' +
           '<div class="ftr__brand">' + logo(false) +
-            '<p>A legacy of Vietnamese hospitality. Eight hotels in District 1. One heartfelt promise.</p>' +
+            '<p>A legacy of Vietnamese hospitality. Distinctive stays in the heart of District 1. One heartfelt promise.</p>' +
             '<div class="social">' +
               ['fb','ig','yt','tiktok'].map(function (s) {
                 return '<a href="#" aria-label="' + s + '" onclick="return false">' + U.icon(s, 15) + '</a>';
@@ -124,7 +125,17 @@
             '</div></div>' +
           FOOT_COLS.map(function (c) {
             if (c.h === '__CONTACT__') {
-              return '<div class="ftr__col">' + global.Contact.footerBlock() + '</div>';
+              return '<div class="ftr__col ftr__contact">' + global.Contact.footerBlock() + '</div>';
+            }
+            if (c.h === '__TRADE__') {
+              var TT = CT.travelTrade || {};
+              return '<div class="ftr__col ftr__trade">' +
+                '<h5>Travel Trade</h5>' +
+                '<p class="ftr__trade-intro">For travel agencies, tour operators and trade enquiries.</p>' +
+                '<a href="' + U.esc(TT.tel || '#') + '"><span class="sr">Travel Trade phone</span>' + U.icon('phone', 15) + '<span>' + U.esc(TT.displayPhone || '') + '</span></a>' +
+                '<a href="' + U.esc(TT.zalo || '#') + '" target="_blank" rel="noopener">' + U.icon('chat', 15) + '<span>Chat on Zalo</span></a>' +
+                '<a href="' + U.esc(TT.whatsapp || '#') + '" target="_blank" rel="noopener">' + U.icon('phone', 15) + '<span>Chat on WhatsApp</span></a>' +
+              '</div>';
             }
             return '<div class="ftr__col"><h5>' + c.h + '</h5>' +
               c.l.map(function (x) { return '<a href="' + x[1] + '">' + x[0] + '</a>'; }).join('') + '</div>';

@@ -60,12 +60,12 @@
 }
 
 *,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;overflow-x:clip}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;overflow-x:clip;background:var(--ivory)}
 /* The off-canvas drawer is translated past the right edge; without this it
    would extend scrollWidth at tablet widths. `clip` keeps position:sticky
    working, which `overflow-x:hidden` would not. */
 body{
-  margin:0;background:var(--ivory);color:var(--tx);
+  margin:0;background:var(--ivory);color:var(--tx);min-width:320px;
   font-family:var(--sans);font-size:15px;line-height:1.65;
   font-weight:400;letter-spacing:.005em;
   -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
@@ -232,7 +232,7 @@ p:last-child{margin-bottom:0}
 .ftr__ct svg{color:var(--gold-dk);flex-shrink:0}
 .ftr__ct b{display:block;font-size:.82rem;font-weight:600}
 .ftr__ct span{font-size:.8rem;color:var(--tx-2)}
-.ftr__main{display:grid;grid-template-columns:1.7fr repeat(4,1fr) 1.5fr;gap:32px;padding-bottom:3rem}
+.ftr__main{display:grid;grid-template-columns:1.45fr repeat(5,minmax(0,1fr)) 1.25fr 1.25fr;gap:24px;padding-bottom:3rem;align-items:start}
 .ftr__brand .logo__name{color:var(--tx)}
 .ftr__brand p{font-size:.83rem;color:var(--tx-2);margin:1.1rem 0 1.4rem;max-width:230px}
 .ftr__col h5{

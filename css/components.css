@@ -97,12 +97,13 @@
   overflow:hidden;transition:all var(--t);cursor:pointer;display:flex;flex-direction:column;
 }
 .pcard:hover{transform:translateY(-5px);box-shadow:var(--sh-3);border-color:var(--sand)}
-.pcard__img{aspect-ratio:3/4;overflow:hidden;background:var(--beige);position:relative}
+.pcard__img{aspect-ratio:3/4;overflow:hidden;background:var(--beige);position:relative;contain:paint}
 .pcard__img img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease)}
 .pcard:hover .pcard__img img{transform:scale(1.07)}
-.pcard__b{padding:13px 10px 15px;text-align:center}
-.pcard__b h4{font-size:.93rem;line-height:1.25;margin-bottom:3px}
-.pcard__b .area{font-size:.68rem;color:var(--tx-3);letter-spacing:.06em}
+.pcard__b{padding:13px 10px 15px;text-align:center;display:flex;flex-direction:column;min-width:0}
+.pcard__b h4{font-size:.93rem;line-height:1.25;margin-bottom:5px;overflow-wrap:anywhere}
+.pcard__b .area{font-size:.68rem;color:var(--tx-3);letter-spacing:.02em;line-height:1.4}
+.pcard__address{display:block;min-height:2.8em}
 .pcard__rate{font-size:.7rem;color:var(--gold-dk);font-weight:600;margin-top:6px}
 
 /* ---------- hotel card (listing) ---------- */
@@ -112,7 +113,7 @@
   transition:all var(--t);
 }
 .hcard:hover{box-shadow:var(--sh-3);border-color:var(--sand)}
-.hcard__media{position:relative;background:var(--beige);min-height:250px;overflow:hidden}
+.hcard__media{position:relative;background:var(--beige);min-height:250px;overflow:hidden;contain:paint}
 .hcard__media img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;transition:transform .7s var(--ease)}
 .hcard:hover .hcard__media img{transform:scale(1.05)}
 .hcard__b{padding:24px 26px;display:flex;flex-direction:column;gap:12px}
@@ -171,7 +172,7 @@
   border:1px solid var(--line);border-radius:var(--r);overflow:hidden;transition:all var(--t);
 }
 .rcard:hover{box-shadow:var(--sh-3);border-color:var(--sand)}
-.rcard__media{position:relative;background:var(--beige);min-height:224px;overflow:hidden}
+.rcard__media{position:relative;background:var(--beige);min-height:224px;overflow:hidden;contain:paint}
 .rcard__b{padding:22px 24px;display:flex;flex-direction:column;gap:11px;min-width:0}
 .rcard__b h3{font-size:1.32rem}
 .rcard__specs{display:grid;grid-template-columns:1fr 1fr;gap:7px 16px}
@@ -489,14 +490,14 @@
 /* ==========================================================================
    CONTACT  (single source: KAS_DATA.config.contact via js/contact.js)
    ========================================================================== */
-.ct-link{display:inline-flex;align-items:center;gap:8px;font-size:.83rem;color:var(--tx-2);
-  padding:4px 0;transition:color var(--t)}
+.ct-link{display:flex;align-items:center;gap:13px;font-size:.83rem;color:var(--tx-2);
+  padding:7px 0;transition:color var(--t);line-height:1.35;min-height:32px}
 .ct-link svg{color:var(--gold-dk);flex-shrink:0}
 .ct-link:hover{color:var(--gold-dk)}
 .ct-link--inv{color:var(--tx-inv-2)}
 .ct-link--inv svg{color:var(--gold)}
 .ct-link--inv:hover{color:var(--ivory)}
-.ct-stack{display:flex;flex-direction:column;gap:2px}
+.ct-stack{display:flex;flex-direction:column;gap:5px}.ct-stack--footer{margin-top:8px}
 .ct-btn{text-transform:none;letter-spacing:.01em;font-size:.76rem}
 
 /* header phone */
@@ -581,3 +582,15 @@
   border:1px solid rgba(194,162,92,.32);color:var(--brown)}
 .photochip--warn{background:rgba(168,118,44,.1);border-color:rgba(168,118,44,.35);color:var(--warn)}
 .photochip svg{flex-shrink:0}
+
+
+/* V11.1 footer contact/travel-trade spacing */
+.ftr__contact .ct-link,
+.ftr__trade > a{display:flex;align-items:center;gap:13px;padding:7px 0;line-height:1.35;min-height:32px}
+.ftr__contact .ct-link svg,
+.ftr__trade > a svg{width:17px;height:17px;flex:0 0 17px}
+.ftr__contact .ct-stack--footer{gap:5px;margin-top:8px}
+.ftr__contact .tiny{line-height:1.65}
+.ftr__trade-intro{font-size:.76rem;color:var(--tx-3);line-height:1.55;margin:0 0 8px;max-width:190px}
+.ftr__trade > a{font-size:.82rem;color:var(--tx-2)}
+.ftr__trade > a:hover{color:var(--gold-dk)}
