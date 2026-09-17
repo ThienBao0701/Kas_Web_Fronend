@@ -224,14 +224,6 @@ p:last-child{margin-bottom:0}
 
 /* ---------- footer ---------- */
 .ftr{background:var(--ivory-2);border-top:1px solid var(--line);padding-top:3.5rem}
-.ftr__strip{
-  border-bottom:1px solid var(--line);padding-bottom:2.2rem;margin-bottom:2.8rem;
-  display:grid;grid-template-columns:repeat(4,1fr);gap:24px;
-}
-.ftr__ct{display:flex;align-items:center;gap:12px}
-.ftr__ct svg{color:var(--gold-dk);flex-shrink:0}
-.ftr__ct b{display:block;font-size:.82rem;font-weight:600}
-.ftr__ct span{font-size:.8rem;color:var(--tx-2)}
 .ftr__main{display:grid;grid-template-columns:1.45fr repeat(5,minmax(0,1fr)) 1.25fr 1.25fr;gap:24px;padding-bottom:3rem;align-items:start}
 .ftr__brand .logo__name{color:var(--tx)}
 .ftr__brand p{font-size:.83rem;color:var(--tx-2);margin:1.1rem 0 1.4rem;max-width:230px}

@@ -103,9 +103,7 @@ woven(title, sub) +
         zaloLink('plain') +
         whatsappLink('plain') +
         emailLink('plain') +
-      '</div>' +
-      '<p class="tiny muted" style="margin:12px 0 0">' + U.esc(C.hours) +
-      ' · ' + U.esc(C.hqAddress) + '</p>';
+      '</div>';
   }
 
   /* ---------- floating widget ----------

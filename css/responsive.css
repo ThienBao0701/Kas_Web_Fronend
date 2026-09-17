@@ -57,7 +57,6 @@
   .dl{grid-template-columns:repeat(2,1fr)}
   .amgrid{grid-template-columns:repeat(3,1fr)}
   .trust__in{justify-content:flex-start;gap:14px 26px}
-  .ftr__strip{grid-template-columns:1fr 1fr;gap:18px}
   .hero{min-height:560px}
 }
 
@@ -107,11 +106,9 @@
   .trust--pad .trust__in{flex-direction:column;gap:18px}
   .trust--pad .trust__i{min-width:0}
 
-  .ftr__strip{grid-template-columns:1fr;gap:15px}
   .ftr__main{grid-template-columns:1fr 1fr;gap:26px}
   .ftr__brand,.ftr__news{grid-column:1/-1}
   .ftr__contact,.ftr__trade{min-width:0}
-  .ftr__ct{gap:13px}
   .ftr__btm{flex-direction:column;gap:10px}
 
   .modal__b{padding:24px 22px}

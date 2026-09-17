@@ -49,8 +49,6 @@
         <h4 style="font-family:var(--sans);font-size:.72rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;margin-bottom:16px">Room policies</h4>
         <div id="rPol"></div>
 
-        <div class="alert alert--info" style="margin-top:26px" id="rSrc"></div>
-
         <div class="divider" style="margin-block:34px"></div>
         <div id="reviews"></div>
       </div>
@@ -167,10 +165,6 @@
     var uploaded = (room.liveImages && room.liveImages.length) ? room.liveImages : [];
     if(uploaded.length){
       App.gallery(U.$('#gal'), uploaded, hotel.name + ' — ' + room.name);
-      U.$('#rSrc').innerHTML = U.icon('info', 17) +
-        '<span><b>KAS reference information</b>Room details are matched to the operator rate sheet by <b style="display:inline">chi nhánh + STT + Ez</b>.' +
-        '<br>Photographs: <b style="display:inline">' + uploaded.length + ' ảnh do KAS quản trị upload cho đúng hạng phòng này</b>. The gallery above shows all uploaded photos.' +
-        '<br>Giá hiển thị dưới đây là <b style="display:inline">giá tham khảo KAS</b>, không cộng VAT hoặc service charge và không phải giá live của Agoda.</span>';
     }
   });
   U.$('#specStrip').innerHTML = R.specStripHTML(hotel, room);
@@ -199,20 +193,6 @@
   U.$('#rPol').innerHTML = R.policiesHTML(hotel, room, search.checkIn);
 
   var verified = room.photoCategory === 'VERIFIED_ROOM_PHOTO';
-  U.$('#rSrc').innerHTML = U.icon('info', 17) +
-    '<span><b>Where this comes from</b>' +
-    'Room name, size, bed type, occupancy and view: ' + U.esc(room.roomSource) +
-    ', cross-referenced with this property\'s Agoda listing (“' + U.esc(hotel.legacyName) + '”).<br>' +
-    'Photographs: ' + (verified
-      ? '<b style="display:inline">verified guest-room photographs</b> of ' + U.esc(hotel.name) +
-        ' — taken from the source gallery\'s <i>Rooms</i> category, so no exterior, lobby or ' +
-        'restaurant shot appears here. No source publishes photos per room type, so their ' +
-        'assignment to <i>' + U.esc(room.name) + '</i> is marked <b style="display:inline">NEEDS REVIEW</b>.'
-      : 'the source gallery for this property is <b style="display:inline">not categorised</b>, so these ' +
-        'photographs are <b style="display:inline">NOT confirmed</b> to show a guest room. Marked NEEDS REVIEW.') +
-    '<br>Source: ' + U.esc(room.imageSource) + '.<br>' +
-    'The nightly rate is the <b style="display:inline">KAS reference rate sheet</b> applied theo đúng ngày khách chọn, không cộng VAT hoặc service charge.</span>';
-
   /* ---- reviews ---- */
   U.$('#reviews').innerHTML = R.reviewsHTML(hotel);
 

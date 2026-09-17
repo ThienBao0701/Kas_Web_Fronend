@@ -174,7 +174,7 @@
   var EXP = [['utensils','Dining','Vietnamese, international and a Thai kitchen at KAS Sonata.'],
              ['coffee','Rooftop Bars','City views and sunsets at Milestone, Ancient and Elegance.'],
              ['leaf','Wellness','Spa treatments at KAS Dilly, Zody and Eliana.'],
-             ['map','Local Experiences','Ben Thanh, Tao Dan Park and the museum quarter on foot.']];
+             ['map','Local Experiences','Ben Thanh, Tao Dan Park and The Museum Quarter on foot.']];
   U.$('#exps').innerHTML = EXP.map(function (e) {
     return '<div><div style="color:var(--gold-dk);margin-bottom:11px">' + U.icon(e[0], 26) + '</div>' +
       '<h4 style="font-size:1.15rem;margin-bottom:5px">' + e[1] + '</h4>' +
@@ -199,7 +199,7 @@
       '</div>' +
       '<div><a class="btn btn--gold" href="hotel-detail.html?hotel=' + flag.id + '">Discover now</a></div>' +
     '</div>' +
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:2px">' +
+    '<div class="featured-gallery" style="display:grid;grid-template-columns:1fr 1fr;gap:0">' +
       flag.images.slice(1, 5).map(function (src, i) {
         return '<div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--char)">' + U.img(src, flag.name, '', true, false) + '</div>';
       }).join('') +

@@ -109,12 +109,6 @@
     host.className = 'ftr';
     host.innerHTML =
       '<div class="container">' +
-        '<div class="ftr__strip">' +
-          ct('help','Need assistance?','We\'re here to help ' + CT.hours + '.') +
-          ctLink('phone','Call us', CT.displayPhone, CT.tel, false) +
-          ctLink('chat','Chat on Zalo','Quick support', CT.zalo, true) +
-          ctLink('chat','WhatsApp','Message us', CT.whatsapp, true) +
-        '</div>' +
         '<div class="ftr__main">' +
           '<div class="ftr__brand">' + logo(false) +
             '<p>A legacy of Vietnamese hospitality. Distinctive stays in the heart of District 1. One heartfelt promise.</p>' +
@@ -161,14 +155,6 @@
       f.reset();
     });
 
-    function ct(ic, a, b) {
-      return '<div class="ftr__ct">' + U.icon(ic, 20) + '<div><b>' + a + '</b><span>' + b + '</span></div></div>';
-    }
-    function ctLink(ic, a, b, href, ext) {
-      return '<a class="ftr__ct" href="' + href + '"' +
-        (ext ? ' target="_blank" rel="noopener"' : '') + '>' + U.icon(ic, 20) +
-        '<div><b>' + a + '</b><span>' + U.esc(b) + '</span></div></a>';
-    }
   }
 
   /* ---------------- chat + back to top ---------------- */

@@ -30,7 +30,7 @@
         '<input type="date" id="sbOut" value="' + U.esc(v.checkOut) + '" min="' + U.addDays(v.checkIn, 1) + '" aria-label="Check-out date">') +
       '<div class="sf"><span class="sf__lb">Guests &amp; Rooms</span>' +
         '<div class="sf__ctl">' + U.icon('users', 16) +
-          '<button type="button" id="sbGuests" style="width:100%;text-align:left;font-size:.92rem;font-weight:500;color:inherit">' +
+          '<button type="button" id="sbGuests" style="width:100%;text-align:left;font-size:.92rem;font-weight:500">' +
             guestText(v) + '</button></div>' +
         '<div class="gpop" id="sbPop">' +
           row('Adults', 'Ages 13+', 'adults', v.adults, 1, 12) +
