@@ -91,7 +91,7 @@
 <script src="js/utils.js"></script>
 <script src="js/storage.js"></script>
 <script src="js/contact.js"></script>
-<script src="js/app.js"></script>
+<script src="js/i18n.js"></script><script src="js/app.js"></script>
 <script src="js/booking.js"></script>
 <script src="js/search.js"></script>
 <script src="js/hotel.js"></script>
@@ -195,6 +195,7 @@
   var verified = room.photoCategory === 'VERIFIED_ROOM_PHOTO';
   /* ---- reviews ---- */
   U.$('#reviews').innerHTML = R.reviewsHTML(hotel);
+  if (window.KAS_I18N) window.KAS_I18N.apply();
 
   /* ---- sidebar ---- */
   function paintSide() {
@@ -229,6 +230,7 @@
     U.$('#mctaBtn').addEventListener('click', goBook);
   }
   paintSide();
+  if (window.KAS_I18N) window.KAS_I18N.apply();
   /* Repaint the price immediately after /api/catalog has overlaid any
      admin-edited rates into KAS_RATES. */
   liveCatalogPromise.then(function(){ paintSide(); });

@@ -11,6 +11,3 @@ npm-debug.log*
 tools/image-map.json
 assets/images/hotels/
 uploads/
-.env
-.env.*
-!.env.example
