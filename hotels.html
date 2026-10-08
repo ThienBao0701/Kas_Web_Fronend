@@ -98,6 +98,7 @@
 <script src="js/search.js"></script>
 <script src="js/hotel.js"></script>
 <script src="js/live.js"></script>
+<script src="js/site-images.js"></script>
 <script>
 (function () {
   var U = window.U, D = window.KAS_DATA, App = window.App,
@@ -128,16 +129,8 @@
       });
     }
     window.__KAS_SYNC_PROPERTY_GALLERIES__ = syncPropertyGalleries;
-    var heroHotel = D.getHotel('hotel-02');
-    if (heroHotel && heroHotel.images && heroHotel.images.length) {
-      U.$('#heroBg').innerHTML = U.img(heroHotel.images[0], heroHotel.name, '', false, false);
-    }
     return catalog;
   }).catch(function() {
-    var fallbackHero = D.getHotel('hotel-02');
-    if (fallbackHero && fallbackHero.images && fallbackHero.images.length) {
-      U.$('#heroBg').innerHTML = U.img(fallbackHero.images[0], fallbackHero.name, '', false, false);
-    }
     return null;
   });
 

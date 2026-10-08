@@ -354,6 +354,13 @@
       "name": "ef3ee621-2a89-4860-a7bb-b166f072ab30.png",
       "updatedAt": "2026-10-06T10:00:17.279Z",
       "source": "admin-upload"
+    },
+    "page.hero.hotels": {
+      "id": "aabb1413-58f1-4d91-92c3-7c9bbafdec8b",
+      "url": "https://images.unsplash.com/photo-1656692197297-cb1340b4d538?q=90&w=3840&auto=format&fit=crop",
+      "name": "URL image",
+      "updatedAt": "2026-10-08T09:37:23.324Z",
+      "source": "admin-url"
     }
   }
 }
