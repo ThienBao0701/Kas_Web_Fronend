@@ -1006,6 +1006,10 @@ body.home-redesign{overflow-x:hidden}
 :root{--nav-h:76px;--home-rail:1728px;--home-content:1200px;--home-gutter:24px}
 
 /* ---------- Desktop frame ---------- */
+/* Zoom/viewport safety: keep the centered rail bounded by the actual viewport. */
+.home-redesign{overflow-x:clip}
+.home-redesign .home-page-grid{overflow-x:clip !important}
+
 .home-redesign .home-page-grid{
   display:grid !important;
   grid-template-columns:minmax(var(--home-gutter),1fr) minmax(0,var(--home-rail)) minmax(var(--home-gutter),1fr) !important;

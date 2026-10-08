@@ -1,5 +1,8 @@
 'use strict';
 (function(){
+  var homeHero=document.querySelector('#homeHeroBg');
+  if(homeHero) homeHero.classList.add('site-image-pending');
+
   function applyHome(site){
     site=site||{};
     function setImg(key, selector){
@@ -24,12 +27,26 @@
        The hero slides are created dynamically by the inline home script, so
        this is intentionally selector-based and does not depend on a fixed
        render delay. */
+    var heroLoads=[];
     for(var i=0;i<12;i++){
       var key = i<8 ? 'home.hero.0'+(i+1) : 'home.heroExtra'+(i-7);
       var heroItem=site[key];
       var heroEl=document.querySelector('.home-hero__slide[data-index="'+i+'"] img');
-      if(heroItem&&heroItem.url&&heroEl&&heroEl.src!==heroItem.url) heroEl.src=heroItem.url;
+      if(!heroItem||!heroItem.url||!heroEl) continue;
+      if(i===0 && heroEl.src!==heroItem.url){
+        (function(el,url){
+          heroLoads.push(new Promise(function(resolve){
+            var img=new Image();
+            img.onload=function(){ el.src=url; resolve(); };
+            img.onerror=function(){ resolve(); };
+            img.src=url;
+          }));
+        })(heroEl,heroItem.url);
+      } else if(heroEl.src!==heroItem.url){
+        heroEl.src=heroItem.url;
+      }
     }
+    return Promise.all(heroLoads);
   }
   function applyGuidebook(site){
     site=site||{};
@@ -84,7 +101,9 @@
       applyPageHeroes(site);
       var homeHero=document.querySelector('#homeHeroBg');
       if(homeHero){
-        applyHome(site);
+        applyHome(site).then(function(){
+          homeHero.classList.remove('site-image-pending');
+        });
         /* Keep Admin → Website sync reliable even if the hero is rebuilt
            after the API response arrives. */
         if(!homeHero.__kasSiteImageObserver){
@@ -97,7 +116,9 @@
       }
       if(document.querySelector('.guide-nav-wrap')||document.querySelector('.entry-grid')) applyGuidebook(site);
       if(document.querySelector('.cg-card')) applyCityGuide(site);
-    }).catch(function(){});
+    }).catch(function(){
+      if(homeHero) homeHero.classList.remove('site-image-pending');
+    });
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',load); else load();
   window.addEventListener('pageshow',function(){ if(document.visibilityState==='visible') load(); });
