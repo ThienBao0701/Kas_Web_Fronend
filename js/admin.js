@@ -26,16 +26,12 @@
   }
   function renderSiteImages(target, slots){
     if(!target) return;
-    /* Admin Hero preview uses the same public siteImages payload as the website.
-       This prevents the Admin panel from showing a stale/default hero while the
-       public page is already using the current Admin-managed image. */
     var siteOverrides=overrides.site||{};
-    var publicSiteImages=(data&&data.siteImages)||{};
     target.innerHTML=(slots||[]).map(function(slot){
-      var item=publicSiteImages[slot.key]||siteOverrides[slot.key];
+      var item=siteOverrides[slot.key];
       var overrideUrl=item&&item.url?String(item.url):'';
-      var current=overrideUrl;
-      var source=item?(item.source==='admin-upload'?'Ảnh upload trong Admin':'URL ghi đè từ Admin'):'Chưa có ảnh Admin';
+      var current=overrideUrl||String(slot.default||'');
+      var source=item?(item.source==='admin-upload'?'Ảnh upload trong Admin':'URL ghi đè từ Admin'):(slot.default?'Ảnh mặc định đang khai báo trên Website':'Chưa khai báo nguồn ảnh');
       var currentLink=current?'<a class="default" target="_blank" rel="noopener" href="'+esc(current)+'" title="'+esc(current)+'">Mở / copy link ảnh đang dùng ↗</a>':'';
       return '<article class="siteCard"><div class="media">'+(current?'<img src="'+esc(current)+'" alt="'+esc(slot.label)+'" loading="lazy">':'<div class="small">Chưa có ảnh</div>')+'</div><div class="body"><h3>'+esc(slot.label)+'</h3><div class="current">Nguồn hiện hành: '+esc(source)+'</div>'+currentLink+'<div class="upload"><input class="file" type="file" accept="image/jpeg,image/png,image/webp" data-site-input="'+esc(slot.key)+'"><button class="btn gold" data-site-upload="'+esc(slot.key)+'">Upload / thay ảnh</button></div>'+urlInput('site',slot.key,'https://link-anh...')+'<div class="thumbs">'+(item?imageThumb(item,'site',slot.key):'')+'</div></div></article>';
     }).join('');
@@ -94,7 +90,7 @@
     renderSiteImages(homeSiteImages,siteSlots.home||[]);
     renderSiteImages(guidebookSiteImages,siteSlots.guidebook||[]);
     renderCollections();renderPropertyGallery();renderRooms(document.getElementById('roomSearch').value);renderPhotos();}
-  function load(){return Promise.all([fetch('/api/catalog?ts='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}),api('/api/admin/image-overrides?ts='+Date.now()),fetch('/site-image-slots.json?ts='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();})]).then(function(xs){data=xs[0];overrides=xs[1]||{collection:{},property:{},rooms:{},site:{}};if(!overrides.site)overrides.site={};siteSlots=xs[2]||{home:[],guidebook:[],pageHero:[]};render();});}
+  function load(){return Promise.all([fetch('/api/catalog',{cache:'no-store'}).then(function(r){return r.json();}),api('/api/admin/image-overrides'),fetch('/site-image-slots.json',{cache:'no-store'}).then(function(r){return r.json();})]).then(function(xs){data=xs[0];overrides=xs[1]||{collection:{},property:{},rooms:{},site:{}};if(!overrides.site)overrides.site={};siteSlots=xs[2]||{home:[],guidebook:[],pageHero:[]};render();});}
   document.getElementById('roomSearch').addEventListener('input',function(){renderRooms(this.value);});
   document.getElementById('login').addEventListener('click',function(){key=document.getElementById('key').value.trim();var localNoKey=location.hostname==='localhost'||location.hostname==='127.0.0.1'||location.hostname==='[::1]';if(!key&&!localNoKey){setStatus('Hãy nhập ADMIN_KEY.',false);return;}api('/api/admin/status').then(function(){setStatus('Đã mở quyền quản trị.',true);management.classList.remove('hidden');document.getElementById('publicBox').classList.remove('hidden');document.getElementById('publicUrl').textContent=location.origin+'/index.html';document.getElementById('referenceUrl').textContent=location.origin+'/reference';return load();}).catch(function(e){setStatus(e.message,false);});});
 })();
