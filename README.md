@@ -192,7 +192,7 @@ hard-codes a number or link.
 
 | Channel | Value | Link |
 |---|---|---|
-| Phone | 0869 768 885 | `tel:+84869768885` |
+| Phone | 0869 768 885 | `tel:+84968694864` |
 | Zalo | Chat on Zalo | `https://zalo.me/0869768885` |
 | WhatsApp | Chat on WhatsApp | `https://wa.me/84869768885` |
 
