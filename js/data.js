@@ -753,8 +753,8 @@
        widget reads from here. No component may hard-code a number or link.
        ------------------------------------------------------------------ */
     contact: {
-      phone:        '0869768885',
-      displayPhone: '+84 869 768 885',
+      phone:        '+84 968 694 864',
+      displayPhone: '+84 968 694 864',
       tel:          'tel:+84869768885',
       zalo:         'https://zalo.me/0869768885',
       whatsapp:     'https://wa.me/84869768885',
