@@ -578,17 +578,26 @@
             '<button type="button" class="kas-welcome__lang" data-welcome-lang="vi"><span>Tiếng Việt</span><i>○</i></button>' +
           '</div>' +
           '<div class="kas-welcome__rule"></div>' +
-          '<div class="kas-welcome__eyebrow" data-welcome="memberEyebrow">BECOME A KAS MEMBER</div>' +
-          '<p class="kas-welcome__member-copy" data-welcome="memberCopy">Join KAS Member to enjoy exclusive benefits,<br>manage your stays and experience KAS in a more personal way.</p>' +
-          '<div class="kas-welcome__benefits">' +
-            '<span><i aria-hidden="true">◯</i><em data-welcome="benefit1">10–20% member offers</em></span>' +
-            '<span><i aria-hidden="true">◷</i><em data-welcome="benefit2">Early check-in / late check-out up to 2 hours</em></span>' +
-            '<span><i aria-hidden="true">◇</i><em data-welcome="benefit3">Free cancellation until 12:00 on check-in day</em></span>' +
-            '<span><i aria-hidden="true">▣</i><em data-welcome="benefit4">Easier booking management</em></span>' +
+          '<div class="kas-welcome__eyebrow kas-welcome__choice-title" data-welcome="choiceEyebrow">CHOOSE HOW YOU\'D LIKE TO CONTINUE</div>' +
+          '<div class="kas-welcome__choices">' +
+            '<div class="kas-welcome__choice">' +
+              '<div class="kas-welcome__choice-heading" data-welcome="guestHeading">CONTINUE AS GUEST</div>' +
+              '<p class="kas-welcome__choice-copy" data-welcome="guestCopy">Explore KAS and make a reservation without becoming a member.</p>' +
+              '<button class="kas-welcome__choice-btn kas-welcome__choice-btn--dark" type="button" data-welcome-action="guest"><span data-welcome="guest">CONTINUE AS GUEST</span><b>→</b></button>' +
+            '</div>' +
+            '<div class="kas-welcome__choice kas-welcome__choice--member">' +
+              '<div class="kas-welcome__choice-heading" data-welcome="memberEyebrow">BECOME A KAS MEMBER</div>' +
+              '<p class="kas-welcome__choice-copy" data-welcome="memberCopy">Enjoy exclusive benefits while keeping the freedom to book as usual.</p>' +
+              '<ul class="kas-welcome__benefits">' +
+                '<li data-welcome="benefit1">10–20% member offers</li>' +
+                '<li data-welcome="benefit2">Early check-in / late check-out up to 2 hours</li>' +
+                '<li data-welcome="benefit4">Easier booking management</li>' +
+                '<li data-welcome="benefit3">Free cancellation until 12:00 on check-in day</li>' +
+              '</ul>' +
+              '<button class="kas-welcome__choice-btn" type="button" data-welcome-action="join"><span data-welcome="join">JOIN KAS MEMBER</span><b>→</b></button>' +
+            '</div>' +
           '</div>' +
-          '<button class="kas-welcome__join" type="button" data-welcome-action="join"><span data-welcome="join">JOIN KAS MEMBER</span><b>→</b></button>' +
           '<button class="kas-welcome__signin" type="button" data-welcome-action="signin" data-welcome="signin">SIGN IN</button>' +
-          '<button class="kas-welcome__guest" type="button" data-welcome-action="guest"><span data-welcome="guest">Continue as guest</span><b>→</b></button>' +
         '</div>' +
       '</div>';
     document.body.appendChild(m);
@@ -596,14 +605,20 @@
 
     var copy = {
       en: {
-        eyebrow:'WELCOME TO KAS', title:'Choose your language and discover<br>the KAS experience.', language:'LANGUAGE', memberEyebrow:'BECOME A KAS MEMBER',
-        memberCopy:'Join KAS Member to enjoy exclusive benefits,<br>manage your stays and experience KAS in a more personal way.',
-        benefit1:'10–20% member offers', benefit2:'Early check-in / late check-out up to 2 hours', benefit3:'Free cancellation until 12:00 on check-in day', benefit4:'Easier booking management', join:'JOIN KAS MEMBER', signin:'SIGN IN', guest:'Continue as guest'
+        eyebrow:'WELCOME TO KAS', title:'Choose your language and discover<br>the KAS experience.', language:'LANGUAGE',
+        choiceEyebrow:'CHOOSE HOW YOU\'D LIKE TO CONTINUE', guestHeading:'CONTINUE AS GUEST',
+        guestCopy:'Explore KAS and make a reservation without becoming a member.',
+        memberEyebrow:'BECOME A KAS MEMBER',
+        memberCopy:'Enjoy exclusive benefits while keeping the freedom to book as usual.',
+        benefit1:'10–20% member offers', benefit2:'Early check-in / late check-out up to 2 hours', benefit3:'Free cancellation until 12:00 on check-in day', benefit4:'Easier booking management', join:'JOIN KAS MEMBER', signin:'SIGN IN', guest:'CONTINUE AS GUEST'
       },
       vi: {
-        eyebrow:'CHÀO MỪNG ĐẾN VỚI KAS', title:'Chọn ngôn ngữ và khám phá<br>trải nghiệm KAS.', language:'NGÔN NGỮ', memberEyebrow:'TRỞ THÀNH THÀNH VIÊN KAS',
-        memberCopy:'Tham gia KAS Member để nhận quyền lợi riêng,<br>quản lý kỳ lưu trú và tận hưởng trải nghiệm KAS trọn vẹn hơn.',
-        benefit1:'Ưu đãi 10–20%', benefit2:'Check-in sớm / check-out muộn tối đa 2 giờ', benefit3:'Hủy phòng miễn phí đến 12:00 cùng ngày check-in', benefit4:'Quản lý đặt phòng dễ dàng', join:'THAM GIA KAS MEMBER', signin:'ĐĂNG NHẬP', guest:'Tiếp tục với tư cách khách'
+        eyebrow:'CHÀO MỪNG ĐẾN VỚI KAS', title:'Chọn ngôn ngữ và khám phá<br>trải nghiệm KAS.', language:'NGÔN NGỮ',
+        choiceEyebrow:'CHỌN CÁCH BẠN MUỐN TIẾP TỤC', guestHeading:'TIẾP TỤC VỚI TƯ CÁCH KHÁCH',
+        guestCopy:'Khám phá KAS và đặt phòng mà không cần trở thành thành viên.',
+        memberEyebrow:'TRỞ THÀNH THÀNH VIÊN KAS',
+        memberCopy:'Tận hưởng quyền lợi riêng mà vẫn tự do đặt phòng theo cách bạn muốn.',
+        benefit1:'Ưu đãi 10–20%', benefit2:'Check-in sớm / check-out muộn tối đa 2 giờ', benefit3:'Hủy phòng miễn phí đến 12:00 cùng ngày check-in', benefit4:'Quản lý đặt phòng dễ dàng', join:'THAM GIA KAS MEMBER', signin:'ĐĂNG NHẬP', guest:'TIẾP TỤC VỚI TƯ CÁCH KHÁCH'
       }
     };
 
